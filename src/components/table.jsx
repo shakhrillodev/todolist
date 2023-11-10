@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react"
 import TableRows from "./table-rows"
+import Confetti from 'react-confetti'
 
 const Table = () => {
     const [activities, setActivities] = useState([])
     const [value, setValue] = useState('')
+    const [falling, setFalling] = useState(false)
     let [Done, setDone] = useState(0)
     useEffect(()=>{
     }, [activities])
+
+    const onConfetti = ()=>{
+        setTimeout(()=>{
+            setFalling(true)
+            setTimeout(()=>{
+                setFalling(false)
+            }, 5000)
+        }, 200)
+    }
 
     const onAddActivity = (e)=>{
         e.preventDefault()
@@ -30,6 +41,7 @@ const Table = () => {
             if (item.name === name) {
                 if(item.checked===false){
                     setDone(Done+1)
+                    onConfetti()
                 }
                 else{
                     setDone(Done-1)
@@ -39,7 +51,6 @@ const Table = () => {
             return item
         }))
     }
-    console.log((Done/activities.length).toFixed(2)*100);
     return (
         <div className="w-[50%] pt-[5vh] flex flex-col justify-around h-[100vh] overflow-hidden">
             <form className="flex">
@@ -52,6 +63,7 @@ const Table = () => {
                     <p className="absolute inline"><b>{Done}/{activities.length}</b></p>
                 </div>    
             </div>
+            { falling && <Confetti gravity={0.05} />}
         </div>
     )
 }
