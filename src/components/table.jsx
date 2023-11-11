@@ -3,11 +3,18 @@ import TableRows from "./table-rows"
 import Confetti from 'react-confetti'
 
 const Table = () => {
-    const [activities, setActivities] = useState([])
+    const onStorage = (JSON.parse(localStorage.getItem("tasks")) ? JSON.parse(localStorage.getItem("tasks")) : [])
+    const [activities, setActivities] = useState(onStorage)
     const [value, setValue] = useState('')
     const [falling, setFalling] = useState(false)
     let [Done, setDone] = useState(0)
     useEffect(()=>{
+        setDone(()=>{
+            let num=0
+            activities.map(item=>num+=item.checked)
+            return num
+        })
+        localStorage.setItem("tasks", JSON.stringify(activities))
     }, [activities])
 
     const onConfetti = ()=>{
