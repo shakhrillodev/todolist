@@ -22,7 +22,16 @@ const Table = () => {
     const onAddActivity = (e)=>{
         e.preventDefault()
         if(value!==''){
-            setActivities([{name: value, checked: false}, ...activities])
+            setActivities(()=>{
+                let isDuplicate = false
+                let arr = activities.filter(a=>{
+                    if(a.name===value){
+                        isDuplicate=true
+                    }  
+                    return true  
+                })
+                return isDuplicate ? arr : [...arr, {name: value, checked: false}]
+            })
             setValue('')
         }
     }   
